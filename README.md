@@ -5,7 +5,6 @@ Only the version for VS 2017 has been kept.
 # What is it?
 
 Visual Studio 2017 extension for linting **Typescript** files using `tslint`.
-You can download extension on the marketplace:
 
 ![TSLint](TSLint/Resources/preview.png)
 
