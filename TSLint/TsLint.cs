@@ -35,18 +35,13 @@ namespace TSLint
 
             if (existingPath.Equals(TsLint.DefKeyValuePair))
             {
-                // First, check if the project for this file has local installation of tslint.
-                var potentialPath = TsLint.TryGetProjectTsLint(tsFilename);
+
+                // First, check if the solution has a local installation of tslint.
+                var potentialPath = TsLint.TryGetSolutionTsLint();
 
                 if (potentialPath.Equals(TsLint.DefKeyValuePair))
                 {
-                    // Now, check if the solution has local installation of tslint.
-                    potentialPath = TsLint.TryGetSolutionTsLint();
-                }
-
-                if (potentialPath.Equals(TsLint.DefKeyValuePair))
-                {
-                    // No project, no solution, check if we can find local installation of tslint "manually".
+                    // When no solution tslint file is found, check if we can find local installation of tslint "manually".
                     potentialPath = TsLint.TryGetTsLint(tsFilename);
                 }
 
@@ -84,23 +79,6 @@ namespace TSLint
             return output;
         }
 
-        private static KeyValuePair<string, string> TryGetProjectTsLint(string tsFilename)
-        {
-            var item = _dte2.Solution.FindProjectItem(tsFilename);
-            var project = item.ContainingProject;
-
-            // If there is no project (file is dragged or explicitly opened).
-            if (string.IsNullOrEmpty(project.FullName))
-                return TsLint.DefKeyValuePair;
-
-            var projectPath = Path.GetDirectoryName(project.FullName);
-            var tsLintCmdPath = $"{projectPath}{TslintCmdSubpath}";
-
-            return File.Exists(tsLintCmdPath)
-                ? new KeyValuePair<string, string>(projectPath, tsLintCmdPath)
-                : TsLint.DefKeyValuePair;
-        }
-
         private static KeyValuePair<string, string> TryGetSolutionTsLint()
         {
             // If there is no solution (file is dragged or explicitly opened).
@@ -108,7 +86,7 @@ namespace TSLint
                 return TsLint.DefKeyValuePair;
 
             var solutionPath = Path.GetDirectoryName(_dte2.Solution.FullName);
-            var tsLintCmdPath = $"{solutionPath}{TslintCmdSubpath}";
+            var tsLintCmdPath = $"{solutionPath}\\Build{TslintCmdSubpath}";
 
             return File.Exists(tsLintCmdPath)
                 ? new KeyValuePair<string, string>(solutionPath, tsLintCmdPath)
