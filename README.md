@@ -1,6 +1,7 @@
 # Original extension
 This extension has been forked from [vladeck's TSLint extension](https://github.com/vladeck/TSLint).
 Only the version for VS 2017 has been kept.
+Download the extension here: [TSLint.vsix](dist/TSLint.vsix?raw=true)
 
 # What is it?
 
